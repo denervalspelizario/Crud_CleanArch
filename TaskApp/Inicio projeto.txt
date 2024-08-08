@@ -1,0 +1,9 @@
+
+
+Cria-se API com solução com nome diferente
+
+Cria-se as bibliotecas de classe Application, Domain, Infra e Services
+
+Adiciona as referências para ver as referencias 2 cliques diretamente 
+nas blibliotecas de classes irá abrir arquivo com as deficnições do projeto
+e olhe em ProjectReference 
