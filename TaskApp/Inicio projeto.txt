@@ -9,3 +9,8 @@ nas blibliotecas de classes irá abrir arquivo com as deficnições do projeto
 e olhe em ProjectReference 
 
 Domain(ou Core) = entidades e regras de negocio
+
+Infra = Ibfraestrutura da aplicação(conexão com nuvem, acesso a dados, banco)
+Obs ao criar as migrations pelo cli precisa mudar projeto padrão para Infra senão da erro
+add-migration NomeQualquer   (gera o arquivo migration)
+update-database        (aletra no banco baseado no arquivo migration)
