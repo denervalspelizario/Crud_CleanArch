@@ -106,8 +106,8 @@ namespace Infra.Migrations
                     b.Property<string>("RefresToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RefreshTokenExpirationTime")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime?>("RefreshTokenExpirationTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Surname")
                         .HasMaxLength(50)

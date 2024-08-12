@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class CorrecaoRefreshToken : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,7 @@ namespace Infra.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RefresToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshTokenExpirationTime = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RefreshTokenExpirationTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

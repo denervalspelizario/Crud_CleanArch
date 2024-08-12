@@ -24,5 +24,10 @@ APP = Codigo da aplicação, funcionalidades e serviços, CQRS(Padrão de desenvolvi
 as consultas das ações que tem efeito sobre o estado do sistema e dados)
 
 
+Fluxo do projeto
+
+Controlador > metodo Handler(Application/Handlers)
+
+
 
 
