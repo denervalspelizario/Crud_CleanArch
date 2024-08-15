@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Application.UserCQ.Validators;
 using FluentValidation.AspNetCore;
+using Application.Mappings;
 
 namespace API
 {
@@ -13,7 +14,6 @@ namespace API
         public static void AddServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -42,6 +42,12 @@ namespace API
             builder.Services.AddValidatorsFromAssemblyContaining<CreateUserComandValidator>();
             builder.Services.AddFluentValidationAutoValidation();
 
+        }
+
+        // método do automapper
+        public static void AddMapper(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddAutoMapper(typeof(ProfileMappings).Assembly);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Application.UserCQ.Commands;
 using Application.UserCQ.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
