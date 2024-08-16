@@ -5,12 +5,49 @@ using FluentValidation;
 using Application.UserCQ.Validators;
 using FluentValidation.AspNetCore;
 using Application.Mappings;
+using System.Reflection;
+
 
 namespace API
 {
     // Classe que será usada para organizar o program.cs quando o projeto esta muito grande
     public static class BuilderExtensions
     {
+
+        // metodo para customizar o swagger
+        public static void AddSwaggerDocs(this WebApplicationBuilder builder)
+        {
+            
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Task App",
+                    Description = "Um aplicativo de tarefas baseado no Trello e escrito em ASP.NET Core V8",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact 
+                    {
+                        Name = "Exemplo de página de contato",
+                        Url = new Uri("https://example.com/contact")
+                    },
+                    License = new Microsoft.OpenApi.Models.OpenApiLicense 
+                    {
+                        Name = "Exemplo de página de licença",
+                        Url = new Uri("https://example.com/license")
+                    }
+                });
+
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+
+            });
+
+
+            
+        }
+
+
+
         public static void AddServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddControllers();
