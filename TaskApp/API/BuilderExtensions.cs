@@ -6,6 +6,11 @@ using Application.UserCQ.Validators;
 using FluentValidation.AspNetCore;
 using Application.Mappings;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Domain.Abstractions;
+using Services.AuthService;
 
 
 namespace API
@@ -13,6 +18,22 @@ namespace API
     // Classe que será usada para organizar o program.cs quando o projeto esta muito grande
     public static class BuilderExtensions
     {
+
+        public static void AddServices(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+
+            /* Config Mediator referênciando 1 (CreateUserComand) 
+               ja referência todos os outros que estiverem no mesmo assembly*/
+            builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(
+                    typeof(CreateUserCommand).Assembly));
+        }
+
+
+
 
         // metodo para customizar o swagger
         public static void AddSwaggerDocs(this WebApplicationBuilder builder)
@@ -41,26 +62,32 @@ namespace API
                 options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
             });
-
-
-            
         }
 
 
-
-        public static void AddServices(this WebApplicationBuilder builder)
+        // método de autenticação
+        public static void AddJwtAuth(this WebApplicationBuilder builder)
         {
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            var configuration = builder.Configuration;
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
 
-            /* Config Mediator referênciando 1 (CreateUserComand) 
-               ja referência todos os outros que estiverem no mesmo assembly*/
-            builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(
-                    typeof(CreateUserCommand).Assembly));
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = configuration["JWT:Issuer"],
+                    ValidAudience = configuration["JWT:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!))
+                };
+            });
         }
 
+
+
+        
 
         // metodo para uso do contexto do database
         public static void AddDatabase(this WebApplicationBuilder builder)
@@ -85,6 +112,13 @@ namespace API
         public static void AddMapper(this WebApplicationBuilder builder)
         {
             builder.Services.AddAutoMapper(typeof(ProfileMappings).Assembly);
+        }
+
+
+        // metodo das injeções de dependencias
+        public static void AddInjections(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IAuthService, AuthService>();
         }
     }
 }
